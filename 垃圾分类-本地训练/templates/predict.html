@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>在线测试神经网络垃圾分类识别接口</title>
+</head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+
+<body>
+
+
+
+<div class="container-fluid">
+       <h1 class="text-center">深度学习之垃圾分类api</h1>
+	<div class="row-fluid">
+		<div class="span12">
+			<h3>
+				在线测试图片.
+			</h3>
+			<form>
+				<div class="form-group">
+   <div class="col-sm-3 control-label">选择文件</div>
+   <div class="col-sm-4">
+       <div class="input-group">
+       <input id='location' class="form-control" onclick="$('#i-file').click();">
+           <label class="input-group-btn">
+               <input type="button" id="i-check" value="浏览文件" class="btn btn-primary" onclick="$('#i-file').click();">
+           </label>
+       </div>
+   </div>
+   <input type="file" name="file" id='i-file'  onchange="$('#location').val($('#i-file').val());" style="display: none">
+</div>
+            </form>
+             <p class="text-center"><a href="#" id="submit" class="btn btn-warning" role="button">提交</a></p>
+		</div>
+	</div>
+
+    <div class="col-sm-12" id="result">
+
+    </div>
+
+
+    <div class="box">
+         <div class="text-sm">
+            <h3>http://10.11.2.17:5000/predict</h3>
+            <p>post方式访问：上传文件：file</p>
+              <p>例如：file:"XXXXXXX"</p>
+        </div>
+    </div>
+
+
+
+
+</div>
+
+
+<script>
+    $('#submit').click(function () {
+        var formData = new FormData();
+        var file = document.getElementById("i-file").files[0];
+        formData.append("file", file);
+    $.ajax({
+      url:"/predict",
+      type:"POST",
+      data:formData,
+      processData : false,
+      contentType : false,
+      dataType : 'json',
+      async : false,
+      success : function (result) {
+        //成功后的回调事件
+          console.log(result);
+          var html='<div class="alert alert-success" role="alert" id="result">'+result.result+' </div>';
+          $("#result").append(html);
+      }
+    })
+    })
+</script>
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+</body>
+
+
+</html>
+
